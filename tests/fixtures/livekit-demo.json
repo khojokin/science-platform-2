@@ -1,0 +1,18 @@
+{
+  "audiences": [
+    "investors",
+    "institutions",
+    "students"
+  ],
+  "deepLinks": [
+    "science-platform://calls/demo-room",
+    "science-platform://recordings",
+    "science-platform://messages"
+  ],
+  "providers": [
+    "native_mesh",
+    "zoom_video",
+    "zoom_meeting",
+    "livekit_sfu"
+  ]
+}

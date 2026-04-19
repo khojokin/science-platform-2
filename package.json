@@ -1,0 +1,50 @@
+{
+  "name": "science-platform",
+  "private": true,
+  "version": "0.12.0",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "jobs:dispatch": "node scripts/dispatch-jobs.mjs",
+    "lint:types": "tsc --noEmit",
+    "backup:db": "bash scripts/backup-supabase.sh",
+    "backup:upload": "node scripts/upload-backup-to-r2.mjs",
+    "restore:drill": "node scripts/run-restore-drill.mjs",
+    "secrets:rotate": "node scripts/log-secret-rotation.mjs"
+  },
+  "dependencies": {
+    "@clerk/backend": "latest",
+    "@clerk/nextjs": "latest",
+    "@supabase/supabase-js": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "stripe": "latest",
+    "@zoom/meetingsdk": "latest",
+    "@zoom/videosdk-ui-toolkit": "latest",
+    "@aws-sdk/client-s3": "latest",
+    "@sentry/nextjs": "latest",
+    "resend": "latest",
+    "livekit-client": "latest",
+    "@livekit/components-react": "latest",
+    "livekit-server-sdk": "latest"
+  },
+  "devDependencies": {
+    "@opennextjs/cloudflare": "latest",
+    "@playwright/test": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "latest",
+    "vitest": "latest",
+    "wrangler": "latest"
+  }
+}

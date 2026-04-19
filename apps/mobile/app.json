@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "Science Platform",
+    "slug": "science-platform",
+    "scheme": "science-platform",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "plugins": [
+      "expo-router",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#111827"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "android": {
+      "package": "com.example.scienceplatform",
+      "permissions": [
+        "CAMERA",
+        "POST_NOTIFICATIONS",
+        "RECORD_AUDIO"
+      ]
+    },
+    "ios": {
+      "bundleIdentifier": "com.example.scienceplatform",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Use your camera for study rooms and live science calls.",
+        "NSMicrophoneUsageDescription": "Use your microphone for study rooms and live science calls."
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": ""
+      },
+      "apiUrl": "http://localhost:3000",
+      "livekitUrl": ""
+    }
+  }
+}

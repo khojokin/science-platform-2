@@ -1,0 +1,42 @@
+{
+  "name": "science-platform-mobile",
+  "private": true,
+  "version": "0.3.0",
+  "main": "expo-router/entry",
+  "scripts": {
+    "dev": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "typecheck": "tsc --noEmit",
+    "eas:configure": "eas build:configure",
+    "build:preview:android": "eas build --platform android --profile preview",
+    "build:preview:ios": "eas build --platform ios --profile preview"
+  },
+  "dependencies": {
+    "@clerk/expo": "latest",
+    "expo": "latest",
+    "expo-constants": "latest",
+    "expo-linking": "latest",
+    "expo-router": "latest",
+    "expo-secure-store": "latest",
+    "expo-status-bar": "latest",
+    "react": "latest",
+    "react-native": "latest",
+    "react-native-safe-area-context": "latest",
+    "@sentry/react-native": "latest",
+    "expo-notifications": "latest",
+    "expo-device": "latest",
+    "expo-application": "latest",
+    "react-native-webrtc": "latest",
+    "expo-sqlite": "latest",
+    "expo-linear-gradient": "latest",
+    "@livekit/react-native": "latest"
+  },
+  "devDependencies": {
+    "@babel/core": "latest",
+    "@types/react": "latest",
+    "typescript": "latest",
+    "babel-preset-expo": "latest"
+  }
+}
