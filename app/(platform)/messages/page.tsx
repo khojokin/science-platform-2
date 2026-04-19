@@ -10,6 +10,11 @@ export default async function MessagesPage() {
   const userId = await requireUserId();
   const client = await createServerSupabaseClient();
   const conversations = await listUserConversations(client, userId);
+  const starterPrompts = [
+    "Want to co-host a revision session this week?",
+    "Can you review my experimental design draft?",
+    "Up for a paper club on Friday?"
+  ];
 
   return (
     <div className="stack">
@@ -34,6 +39,29 @@ export default async function MessagesPage() {
             <div className="row"><span className="inline-badge">✓</span><span>Realtime refresh now listens for new message inserts.</span></div>
             <div className="row"><span className="inline-badge">✓</span><span>Notifications alert other members when a message is sent.</span></div>
             <div className="row"><span className="inline-badge">✓</span><span>Use a private file upload flow separately for attachments.</span></div>
+          </div>
+        </article>
+      </section>
+
+      <section className="grid two">
+        <article className="card stack">
+          <h3>Conversation starters</h3>
+          <div className="card-list">
+            {starterPrompts.map((prompt) => (
+              <div key={prompt} className="row">
+                <span className="inline-badge">Tip</span>
+                <span>{prompt}</span>
+              </div>
+            ))}
+          </div>
+        </article>
+
+        <article className="card stack">
+          <h3>Message health</h3>
+          <div className="table">
+            <div className="table-row"><span>Active threads</span><strong>{conversations.length}</strong><span className="muted">Last 7 days</span></div>
+            <div className="table-row"><span>Unread alerts</span><strong>Realtime</strong><span className="muted">Synced via notifications</span></div>
+            <div className="table-row"><span>Attachment flow</span><strong>Enabled</strong><span className="muted">Storage-backed upload path</span></div>
           </div>
         </article>
       </section>

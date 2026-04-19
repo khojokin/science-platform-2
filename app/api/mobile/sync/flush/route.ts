@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ ok: true, inserted: 0 });
     }
 
-    const payload = events.map((event) => ({
+    const payload = events.map((event: Record<string, unknown>) => ({
       user_id: userId,
       sync_type: String(event.syncType ?? event.type ?? "mutation"),
       payload: event,

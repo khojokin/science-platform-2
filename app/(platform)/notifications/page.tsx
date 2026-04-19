@@ -35,7 +35,7 @@ export default async function NotificationsPage() {
               <div className="row">
                 <span className={`inline-badge ${notification.read_at ? "" : "warning"}`}>{String(notification.type)}</span>
                 <span className="muted">{formatDate(String(notification.created_at))}</span>
-                {notification.actor?.handle ? <span className="muted">@{String(notification.actor.handle)}</span> : null}
+                {((notification as any).actor)?.handle ? <span className="muted">@{((notification as any).actor).handle}</span> : null}
               </div>
 
               <div>

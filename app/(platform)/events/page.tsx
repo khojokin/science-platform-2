@@ -23,6 +23,21 @@ export default async function EventsPage() {
         <p className="page-copy">Run study sessions, paper clubs, webinars, office hours, competitions, and community events.</p>
       </section>
 
+      <section className="grid three">
+        <article className="metric">
+          <span className="muted">Upcoming sessions</span>
+          <strong className="metric-value">{events.length}</strong>
+        </article>
+        <article className="metric">
+          <span className="muted">Your registrations</span>
+          <strong className="metric-value">{registrations.size}</strong>
+        </article>
+        <article className="metric">
+          <span className="muted">Workspaces connected</span>
+          <strong className="metric-value">{workspaces.length}</strong>
+        </article>
+      </section>
+
       <section className="card">
         <h3>Create an event</h3>
         <form className="form" action={createEventAction}>

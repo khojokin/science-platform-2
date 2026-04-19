@@ -26,17 +26,18 @@ export default async function FeedPage() {
 
   const comments = await listCommentsByPostIds(
     client,
-    posts.map((post) => String(post.id))
+    posts.map((post) => String((post as any).id))
   );
 
   const commentsByPost = new Map<string, typeof comments>();
   for (const comment of comments) {
-    const list = commentsByPost.get(String(comment.post_id)) ?? [];
+    const list = commentsByPost.get(String((comment as any).post_id)) ?? [];
     list.push(comment);
-    commentsByPost.set(String(comment.post_id), list);
+    commentsByPost.set(String((comment as any).post_id), list);
   }
 
   const writableCommunities = communities.filter((community) => membershipIds.has(community.id));
+  const trendingTopics = ["#quantum-mechanics", "#organic-chemistry", "#neuroscience", "#research-methods", "#exam-prep"];
 
   return (
     <div className="stack">
@@ -75,28 +76,50 @@ export default async function FeedPage() {
         )}
       </section>
 
+      <section className="grid two">
+        <article className="card stack">
+          <h3>Trending topics</h3>
+          <div className="row wrap">
+            {trendingTopics.map((topic) => (
+              <span key={topic} className="inline-badge">{topic}</span>
+            ))}
+          </div>
+        </article>
+        <article className="card stack">
+          <h3>Recommended communities</h3>
+          <div className="card-list">
+            {communities.slice(0, 4).map((community) => (
+              <div key={community.id} className="row" style={{ justifyContent: "space-between" }}>
+                <span>{community.name}</span>
+                <Link href={`/communities/${community.slug}`} className="button secondary">Open</Link>
+              </div>
+            ))}
+          </div>
+        </article>
+      </section>
+
       <section className="post-list">
         {posts.length === 0 ? (
           <div className="empty-state">No posts yet. Seed the first discussion in a community you join.</div>
         ) : (
           posts.map((post) => (
-            <article key={String(post.id)} className="post-card stack">
+            <article key={String((post as any).id)} className="post-card stack">
               <div className="row">
-                <span className="pill">{String(post.community?.name || "")}</span>
-                <span className="muted">{formatDate(String(post.created_at))}</span>
-                <Link className="muted" href={`/u/${String(post.author?.handle || "")}`}>
-                  @{String(post.author?.handle || "member")}
+                <span className="pill">{String((post as any).community?.name || "")}</span>
+                <span className="muted">{formatDate(String((post as any).created_at))}</span>
+                <Link className="muted" href={`/u/${String((post as any).author?.handle || "")}`}>
+                  @{String((post as any).author?.handle || "member")}
                 </Link>
               </div>
 
               <div>
-                <h3>{String(post.title)}</h3>
-                <div className="post-body">{String(post.body)}</div>
+                <h3>{String((post as any).title)}</h3>
+                <div className="post-body">{String((post as any).body)}</div>
               </div>
 
               <div className="row">
-                {Array.isArray(post.tags)
-                  ? post.tags.map((tag) => (
+                {Array.isArray((post as any).tags)
+                  ? (post as any).tags.map((tag: string) => (
                       <span key={String(tag)} className="inline-badge">
                         #{String(tag)}
                       </span>
@@ -104,9 +127,9 @@ export default async function FeedPage() {
                   : null}
               </div>
 
-              {Array.isArray(post.attachments) && post.attachments.length > 0 ? (
+              {Array.isArray((post as any).attachments) && (post as any).attachments.length > 0 ? (
                 <div className="attachment-list">
-                  {post.attachments.map((attachment) => (
+                  {(post as any).attachments.map((attachment: any) => (
                     <a
                       key={String(attachment.id)}
                       className="attachment-card"
@@ -121,18 +144,18 @@ export default async function FeedPage() {
                 </div>
               ) : null}
 
-              {String(post.author_id) === userId ? (
+              {String((post as any).author_id) === userId ? (
                 <details>
                   <summary>Manage post</summary>
                   <div className="stack" style={{ marginTop: "0.75rem" }}>
                     <form className="form" action={updatePostAction}>
-                      <input type="hidden" name="post_id" value={String(post.id)} />
+                      <input type="hidden" name="post_id" value={String((post as any).id)} />
                       <input type="hidden" name="path" value="/feed" />
-                      <input name="title" defaultValue={String(post.title)} required />
-                      <textarea name="body" defaultValue={String(post.body)} required />
+                      <input name="title" defaultValue={String((post as any).title)} required />
+                      <textarea name="body" defaultValue={String((post as any).body)} required />
                       <input
                         name="tags"
-                        defaultValue={Array.isArray(post.tags) ? post.tags.join(", ") : ""}
+                        defaultValue={Array.isArray((post as any).tags) ? (post as any).tags.join(", ") : ""}
                         placeholder="Tags, comma separated"
                       />
                       <input name="attachment" type="file" accept=".pdf,.png,.jpg,.jpeg,.csv,.txt,.md" />
@@ -140,7 +163,7 @@ export default async function FeedPage() {
                     </form>
 
                     <form action={deletePostAction}>
-                      <input type="hidden" name="post_id" value={String(post.id)} />
+                      <input type="hidden" name="post_id" value={String((post as any).id)} />
                       <input type="hidden" name="path" value="/feed" />
                       <button className="danger" type="submit">Delete post</button>
                     </form>
@@ -151,26 +174,26 @@ export default async function FeedPage() {
               <div className="divider" />
 
               <div className="comment-list">
-                {(commentsByPost.get(String(post.id)) ?? []).map((comment) => (
-                  <div key={comment.id} className="comment-card stack">
+                {(commentsByPost.get(String((post as any).id)) ?? []).map((comment) => (
+                  <div key={(comment as any).id} className="comment-card stack">
                     <div className="row">
-                      <span>@{String(comment.author?.handle || "member")}</span>
-                      <span className="muted">{formatDate(String(comment.created_at))}</span>
+                      <span>@{String((comment as any).author?.handle || "member")}</span>
+                      <span className="muted">{formatDate(String((comment as any).created_at))}</span>
                     </div>
-                    <div className="comment-body">{String(comment.body)}</div>
+                    <div className="comment-body">{String((comment as any).body)}</div>
 
-                    {String(comment.author_id) === userId ? (
+                    {String((comment as any).author_id) === userId ? (
                       <details>
                         <summary>Manage comment</summary>
                         <div className="stack" style={{ marginTop: "0.75rem" }}>
                           <form className="form" action={updateCommentAction}>
-                            <input type="hidden" name="comment_id" value={String(comment.id)} />
+                            <input type="hidden" name="comment_id" value={String((comment as any).id)} />
                             <input type="hidden" name="path" value="/feed" />
-                            <textarea name="body" defaultValue={String(comment.body)} required />
+                            <textarea name="body" defaultValue={String((comment as any).body)} required />
                             <SubmitButton>Save comment</SubmitButton>
                           </form>
                           <form action={deleteCommentAction}>
-                            <input type="hidden" name="comment_id" value={String(comment.id)} />
+                            <input type="hidden" name="comment_id" value={String((comment as any).id)} />
                             <input type="hidden" name="path" value="/feed" />
                             <button className="danger" type="submit">Delete comment</button>
                           </form>
@@ -182,7 +205,7 @@ export default async function FeedPage() {
               </div>
 
               <form className="form" action={createCommentAction}>
-                <input type="hidden" name="post_id" value={String(post.id)} />
+                <input type="hidden" name="post_id" value={String((post as any).id)} />
                 <input type="hidden" name="path" value="/feed" />
                 <textarea name="body" placeholder="Add a comment" required />
                 <SubmitButton>Comment</SubmitButton>
@@ -193,7 +216,7 @@ export default async function FeedPage() {
                 <form className="form" action={reportEntityAction}>
                   <input type="hidden" name="path" value="/feed" />
                   <input type="hidden" name="target_type" value="post" />
-                  <input type="hidden" name="target_id" value={String(post.id)} />
+                  <input type="hidden" name="target_id" value={String((post as any).id)} />
                   <input name="reason" placeholder="Reason" required />
                   <textarea name="details" placeholder="Additional context" />
                   <SubmitButton>Submit report</SubmitButton>

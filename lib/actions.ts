@@ -318,7 +318,7 @@ export async function createCommentAction(formData: FormData) {
       type: "comment",
       title: "New comment on your post",
       body: truncate(body, 140),
-      href: post.community?.slug ? `/communities/${String(post.community.slug)}` : "/feed",
+      href: (post.community as any)?.slug ? `/communities/${String((post.community as any).slug)}` : "/feed",
       metadata: { postId }
     });
   }

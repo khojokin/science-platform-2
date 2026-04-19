@@ -26,13 +26,13 @@ export async function POST(request: Request) {
     await storeWebhookEvent({
       provider: "clerk",
       eventType: event.type,
-      externalId: String((event.data as Record<string, unknown>).id ?? ""),
+      externalId: String((event.data as any).id ?? ""),
       signatureValid: true,
       payload: event as unknown as Record<string, unknown>
     });
 
     if (event.type === "user.created" || event.type === "user.updated") {
-      const payload = event.data as Record<string, unknown>;
+      const payload = event.data as any;
 
       await admin.from("profiles").upsert(
         {
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     }
 
     if (event.type === "user.deleted") {
-      const payload = event.data as Record<string, unknown>;
+      const payload = event.data as any;
       if (payload.id) {
         await admin
           .from("profiles")

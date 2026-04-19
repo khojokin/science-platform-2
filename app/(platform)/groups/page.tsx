@@ -14,6 +14,7 @@ export default async function GroupsPage() {
   const userId = await requireUserId();
   const client = await createServerSupabaseClient();
   const [groups, memberships] = await Promise.all([listStudyGroups(client), listStudyGroupMembershipIds(client, userId)]);
+  const templates = ["Exam sprint", "Paper review circle", "Lab practical prep", "Research collaboration pod"];
 
   return (
     <div className="stack">
@@ -47,6 +48,15 @@ export default async function GroupsPage() {
         </article>
       </section>
 
+      <section className="card stack">
+        <h3>Popular group templates</h3>
+        <div className="row wrap">
+          {templates.map((template) => (
+            <span key={template} className="inline-badge">{template}</span>
+          ))}
+        </div>
+      </section>
+
       <section className="card-list">
         {groups.map((group) => {
           const joined = memberships.has(group.id);
@@ -56,7 +66,7 @@ export default async function GroupsPage() {
             <article key={group.id} className="card stack">
               <div className="row">
                 <span className="pill">{String(group.visibility)}</span>
-                <span className="muted">Owner @{String(group.owner?.handle)}</span>
+                <span className="muted">Owner @{String((group.owner as any)?.handle)}</span>
                 <span className="muted">
                   {group.scheduled_for ? `Next session ${formatDate(String(group.scheduled_for))}` : "Schedule TBD"}
                 </span>

@@ -39,7 +39,7 @@ export default async function CommunityPage({ params }: CommunityPageProps) {
 
   const comments = await listCommentsByPostIds(
     client,
-    posts.map((post) => String(post.id))
+    posts.map((post) => String((post as any).id))
   );
 
   const joined = membershipIds.has(community.id);
@@ -47,9 +47,9 @@ export default async function CommunityPage({ params }: CommunityPageProps) {
   const commentsByPost = new Map<string, typeof comments>();
 
   for (const comment of comments) {
-    const list = commentsByPost.get(String(comment.post_id)) ?? [];
+    const list = commentsByPost.get(String((comment as any).post_id)) ?? [];
     list.push(comment);
-    commentsByPost.set(String(comment.post_id), list);
+    commentsByPost.set(String((comment as any).post_id), list);
   }
 
   return (
@@ -118,19 +118,19 @@ export default async function CommunityPage({ params }: CommunityPageProps) {
           <div className="empty-state">No posts yet. Be the first contributor.</div>
         ) : (
           posts.map((post) => (
-            <article key={String(post.id)} className="post-card stack">
+            <article key={String((post as any).id)} className="post-card stack">
               <div className="row">
-                <span className="muted">{formatDate(String(post.created_at))}</span>
-                <span className="muted">@{String(post.author?.handle || "member")}</span>
+                <span className="muted">{formatDate(String((post as any).created_at))}</span>
+                <span className="muted">@{String((post as any).author?.handle || "member")}</span>
               </div>
               <div>
-                <h3>{String(post.title)}</h3>
-                <div className="post-body">{String(post.body)}</div>
+                <h3>{String((post as any).title)}</h3>
+                <div className="post-body">{String((post as any).body)}</div>
               </div>
 
               <div className="row">
-                {Array.isArray(post.tags)
-                  ? post.tags.map((tag) => (
+                {Array.isArray((post as any).tags)
+                  ? (post as any).tags.map((tag: string) => (
                       <span key={String(tag)} className="inline-badge">
                         #{String(tag)}
                       </span>
@@ -138,9 +138,9 @@ export default async function CommunityPage({ params }: CommunityPageProps) {
                   : null}
               </div>
 
-              {Array.isArray(post.attachments) && post.attachments.length > 0 ? (
+              {Array.isArray((post as any).attachments) && (post as any).attachments.length > 0 ? (
                 <div className="attachment-list">
-                  {post.attachments.map((attachment) => (
+                  {(post as any).attachments.map((attachment: any) => (
                     <a
                       key={String(attachment.id)}
                       className="attachment-card"
@@ -155,25 +155,25 @@ export default async function CommunityPage({ params }: CommunityPageProps) {
                 </div>
               ) : null}
 
-              {String(post.author_id) === userId ? (
+              {String((post as any).author_id) === userId ? (
                 <details>
                   <summary>Manage post</summary>
                   <div className="stack" style={{ marginTop: "0.75rem" }}>
                     <form className="form" action={updatePostAction}>
-                      <input type="hidden" name="post_id" value={String(post.id)} />
+                      <input type="hidden" name="post_id" value={String((post as any).id)} />
                       <input type="hidden" name="path" value={`/communities/${community.slug}`} />
-                      <input name="title" defaultValue={String(post.title)} required />
-                      <textarea name="body" defaultValue={String(post.body)} required />
+                      <input name="title" defaultValue={String((post as any).title)} required />
+                      <textarea name="body" defaultValue={String((post as any).body)} required />
                       <input
                         name="tags"
-                        defaultValue={Array.isArray(post.tags) ? post.tags.join(", ") : ""}
+                        defaultValue={Array.isArray((post as any).tags) ? (post as any).tags.join(", ") : ""}
                         placeholder="Tags, comma separated"
                       />
                       <input name="attachment" type="file" accept=".pdf,.png,.jpg,.jpeg,.csv,.txt,.md" />
                       <SubmitButton>Save post</SubmitButton>
                     </form>
                     <form action={deletePostAction}>
-                      <input type="hidden" name="post_id" value={String(post.id)} />
+                      <input type="hidden" name="post_id" value={String((post as any).id)} />
                       <input type="hidden" name="path" value={`/communities/${community.slug}`} />
                       <button className="danger" type="submit">Delete post</button>
                     </form>
@@ -184,26 +184,26 @@ export default async function CommunityPage({ params }: CommunityPageProps) {
               <div className="divider" />
 
               <div className="comment-list">
-                {(commentsByPost.get(String(post.id)) ?? []).map((comment) => (
-                  <div key={comment.id} className="comment-card stack">
+                {(commentsByPost.get(String((post as any).id)) ?? []).map((comment) => (
+                  <div key={(comment as any).id} className="comment-card stack">
                     <div className="row">
-                      <span>@{String(comment.author?.handle || "member")}</span>
-                      <span className="muted">{formatDate(String(comment.created_at))}</span>
+                      <span>@{String((comment as any).author?.handle || "member")}</span>
+                      <span className="muted">{formatDate(String((comment as any).created_at))}</span>
                     </div>
-                    <div className="comment-body">{String(comment.body)}</div>
+                    <div className="comment-body">{String((comment as any).body)}</div>
 
-                    {String(comment.author_id) === userId ? (
+                    {String((comment as any).author_id) === userId ? (
                       <details>
                         <summary>Manage comment</summary>
                         <div className="stack" style={{ marginTop: "0.75rem" }}>
                           <form className="form" action={updateCommentAction}>
-                            <input type="hidden" name="comment_id" value={String(comment.id)} />
+                            <input type="hidden" name="comment_id" value={String((comment as any).id)} />
                             <input type="hidden" name="path" value={`/communities/${community.slug}`} />
-                            <textarea name="body" defaultValue={String(comment.body)} required />
+                            <textarea name="body" defaultValue={String((comment as any).body)} required />
                             <SubmitButton>Save comment</SubmitButton>
                           </form>
                           <form action={deleteCommentAction}>
-                            <input type="hidden" name="comment_id" value={String(comment.id)} />
+                            <input type="hidden" name="comment_id" value={String((comment as any).id)} />
                             <input type="hidden" name="path" value={`/communities/${community.slug}`} />
                             <button className="danger" type="submit">Delete comment</button>
                           </form>
@@ -216,7 +216,7 @@ export default async function CommunityPage({ params }: CommunityPageProps) {
 
               {joined ? (
                 <form className="form" action={createCommentAction}>
-                  <input type="hidden" name="post_id" value={String(post.id)} />
+                  <input type="hidden" name="post_id" value={String((post as any).id)} />
                   <input type="hidden" name="path" value={`/communities/${community.slug}`} />
                   <textarea name="body" placeholder="Add a comment" required />
                   <SubmitButton>Comment</SubmitButton>
@@ -228,7 +228,7 @@ export default async function CommunityPage({ params }: CommunityPageProps) {
                 <form className="form" action={reportEntityAction}>
                   <input type="hidden" name="path" value={`/communities/${community.slug}`} />
                   <input type="hidden" name="target_type" value="post" />
-                  <input type="hidden" name="target_id" value={String(post.id)} />
+                  <input type="hidden" name="target_id" value={String((post as any).id)} />
                   <input name="reason" placeholder="Reason" required />
                   <textarea name="details" placeholder="Additional context" />
                   <SubmitButton>Submit report</SubmitButton>

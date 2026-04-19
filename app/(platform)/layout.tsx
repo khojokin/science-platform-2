@@ -1,10 +1,16 @@
 
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ensureProfile } from "@/lib/auth";
+import { isClerkConfigured } from "@/lib/auth-config";
 import { NavLink } from "@/components/nav-link";
 
 export default async function PlatformLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  if (!isClerkConfigured) {
+    redirect("/");
+  }
+
   await ensureProfile();
 
   return (
@@ -42,6 +48,7 @@ export default async function PlatformLayout({ children }: Readonly<{ children: 
           <NavLink href="/moderation" label="Moderation" />
           <NavLink href="/ops" label="Ops" />
           <NavLink href="/ops/live" label="Live ops" />
+          <NavLink href="/ops/release" label="Release" />
           <NavLink href="/admin" label="Admin" />
         </nav>
 
@@ -53,7 +60,20 @@ export default async function PlatformLayout({ children }: Readonly<{ children: 
         </div>
       </aside>
 
-      <main className="main">{children}</main>
+      <main className="main stack">
+        <section className="platform-topbar">
+          <div className="stack" style={{ gap: "0.2rem" }}>
+            <span className="muted">Science Platform app</span>
+            <strong>Collaboration workspace</strong>
+          </div>
+          <div className="row wrap">
+            <input className="platform-search" placeholder="Search posts, groups, resources, people..." />
+            <Link className="button secondary" href="/events">Create event</Link>
+            <Link className="button secondary" href="/groups">New group</Link>
+          </div>
+        </section>
+        {children}
+      </main>
     </div>
   );
 }

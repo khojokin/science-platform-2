@@ -1,5 +1,6 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { isClerkConfigured } from "@/lib/auth-config";
 import { env } from "@/lib/env";
 import { createAdminSupabaseClient } from "@/lib/supabase";
 
@@ -10,6 +11,10 @@ function buildDisplayName(user: Awaited<ReturnType<typeof currentUser>>) {
 }
 
 export async function requireUserId() {
+  if (!isClerkConfigured) {
+    redirect("/");
+  }
+
   const { userId } = await auth();
 
   if (!userId) {
@@ -20,6 +25,10 @@ export async function requireUserId() {
 }
 
 export async function ensureProfile() {
+  if (!isClerkConfigured) {
+    redirect("/");
+  }
+
   const user = await currentUser();
 
   if (!user) {

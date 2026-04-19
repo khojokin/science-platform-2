@@ -55,6 +55,21 @@ export default async function ProfilePage() {
           ) : null}
         </article>
       </section>
+
+      <section className="card stack">
+        <h3>Activity tabs</h3>
+        <div className="row wrap">
+          <span className="pill">Posts</span>
+          <span className="pill">Saved</span>
+          <span className="pill">Groups</span>
+          <span className="pill">Achievements</span>
+        </div>
+        <div className="table">
+          <div className="table-row"><span>Peer helpful answers</span><strong>24</strong><span className="muted">Last 30 days</span></div>
+          <div className="table-row"><span>Group sessions attended</span><strong>16</strong><span className="muted">Consistency streak: 5 weeks</span></div>
+          <div className="table-row"><span>Resources contributed</span><strong>11</strong><span className="muted">Vault + community uploads</span></div>
+        </div>
+      </section>
     </div>
   );
 }

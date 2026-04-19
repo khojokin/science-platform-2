@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
+import { isClerkConfigured } from "@/lib/auth-config";
 import { toggleFollowAction } from "@/lib/actions";
 import { SubmitButton } from "@/components/submit-button";
 import { getPublicProfileByHandle, listFollowingIds, listPostsByAuthor } from "@/lib/queries";
@@ -21,7 +22,7 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
   }
 
   const posts = await listPostsByAuthor(publicClient, String(profile.clerk_user_id));
-  const authObject = await auth();
+  const authObject = isClerkConfigured ? await auth() : { userId: null };
 
   let isFollowing = false;
 
@@ -81,7 +82,7 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
             posts.map((post) => (
               <article key={post.id} className="card stack">
                 <div className="row">
-                  <span className="pill">{String(post.community?.name)}</span>
+                  <span className="pill">{String((post.community as any)?.name)}</span>
                   <span className="muted">{formatDate(String(post.created_at))}</span>
                 </div>
                 <h3>{String(post.title)}</h3>

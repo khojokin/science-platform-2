@@ -19,8 +19,8 @@ export default async function AdminPage() {
 
   const client = await createServerSupabaseClient();
   const [reports, logs, verificationRequests] = await Promise.all([
-    listReportsForAdmin(client),
-    listAuditLogsForAdmin(client),
+    listReportsForAdmin(),
+    listAuditLogsForAdmin(),
     client.from("verification_requests").select("*, profile:profiles!fk_verification_requests_user(display_name, handle)").order("created_at", { ascending: false })
   ]);
 
@@ -84,7 +84,7 @@ export default async function AdminPage() {
             {reports.map((report) => (
               <div key={report.id} className="card stack">
                 <div className="row">
-                  <strong>{report.entity_type}</strong>
+                  <strong>{report.target_type}</strong>
                   <span className="inline-badge">{report.status}</span>
                 </div>
                 <div className="muted">{report.reason}</div>
