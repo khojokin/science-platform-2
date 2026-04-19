@@ -36,7 +36,7 @@ export default function LandingPage() {
         <section className="hero-grid section">
           <div className="stack">
             <span className="badge">Science-first social learning platform</span>
-            <h1 className="hero-title">The collaboration layer for students, researchers, and educators.</h1>
+            <h1 className="hero-title">The <span className="gradient-text">collaboration layer</span> for students, researchers, and educators.</h1>
             <p className="page-copy">
               SciSphere unifies communities, study groups, messaging, events, expert access, and premium learning tools in one
               polished workspace built specifically for science.

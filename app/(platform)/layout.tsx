@@ -14,66 +14,56 @@ export default async function PlatformLayout({ children }: Readonly<{ children: 
   await ensureProfile();
 
   return (
-    <div className="app-shell">
-      <aside className="sidebar">
-        <div className="brand">
-          <Link className="brand-title" href="/feed">
-            Science Platform
+    <div className="platform-shell">
+      <header className="platform-header">
+        <div className="platform-header-inner container">
+          <Link className="nav-brand" href="/feed">
+            <span className="brand-dot" />
+            SciSphere App
           </Link>
-          <span className="brand-copy">Communities, workspaces, collaboration, live calls, AI, and premium science tools.</span>
-        </div>
 
-        <nav className="nav">
-          <NavLink href="/dashboard" label="Dashboard" />
-          <NavLink href="/onboarding" label="Onboarding" />
-          <NavLink href="/feed" label="Feed" />
-          <NavLink href="/communities" label="Communities" />
-          <NavLink href="/workspaces" label="Workspaces" />
-          <NavLink href="/search" label="Search" />
-          <NavLink href="/groups" label="Study groups" />
-          <NavLink href="/labs" label="Labs" />
-          <NavLink href="/vault" label="Vault" />
-          <NavLink href="/bounties" label="Bounties" />
-          <NavLink href="/events" label="Events" />
-          <NavLink href="/calendar" label="Calendar" />
-          <NavLink href="/calls" label="Calls" />
-          <NavLink href="/recordings" label="Recordings" />
-          <NavLink href="/messages" label="Messages" />
-          <NavLink href="/notifications" label="Notifications" />
-          <NavLink href="/experts" label="Experts" />
-          <NavLink href="/ambassadors" label="Ambassadors" />
-          <NavLink href="/ai" label="AI copilot" />
-          <NavLink href="/pricing" label="Pricing" />
-          <NavLink href="/profile" label="Profile" />
-          <NavLink href="/moderation" label="Moderation" />
-          <NavLink href="/ops" label="Ops" />
-          <NavLink href="/ops/live" label="Live ops" />
-          <NavLink href="/ops/release" label="Release" />
-          <NavLink href="/admin" label="Admin" />
-        </nav>
+          <input className="platform-search" placeholder="Search posts, groups, resources, people..." />
 
-        <div style={{ marginTop: "2rem" }} className="row">
-          <UserButton />
-          <Link className="button secondary" href="/">
-            Public site
-          </Link>
-        </div>
-      </aside>
+          <details className="platform-menu">
+            <summary>Menu</summary>
+            <div className="platform-menu-panel nav">
+              <NavLink href="/dashboard" label="Dashboard" />
+              <NavLink href="/onboarding" label="Onboarding" />
+              <NavLink href="/feed" label="Feed" />
+              <NavLink href="/communities" label="Communities" />
+              <NavLink href="/workspaces" label="Workspaces" />
+              <NavLink href="/search" label="Search" />
+              <NavLink href="/groups" label="Study groups" />
+              <NavLink href="/labs" label="Labs" />
+              <NavLink href="/vault" label="Vault" />
+              <NavLink href="/bounties" label="Bounties" />
+              <NavLink href="/events" label="Events" />
+              <NavLink href="/calendar" label="Calendar" />
+              <NavLink href="/calls" label="Calls" />
+              <NavLink href="/recordings" label="Recordings" />
+              <NavLink href="/messages" label="Messages" />
+              <NavLink href="/notifications" label="Notifications" />
+              <NavLink href="/experts" label="Experts" />
+              <NavLink href="/ambassadors" label="Ambassadors" />
+              <NavLink href="/ai" label="AI copilot" />
+              <NavLink href="/pricing" label="Pricing" />
+              <NavLink href="/profile" label="Profile" />
+              <NavLink href="/moderation" label="Moderation" />
+              <NavLink href="/ops" label="Ops" />
+              <NavLink href="/ops/live" label="Live ops" />
+              <NavLink href="/ops/release" label="Release" />
+              <NavLink href="/admin" label="Admin" />
+            </div>
+          </details>
 
-      <main className="main stack">
-        <section className="platform-topbar">
-          <div className="stack" style={{ gap: "0.2rem" }}>
-            <span className="muted">Science Platform app</span>
-            <strong>Collaboration workspace</strong>
-          </div>
-          <div className="row wrap">
-            <input className="platform-search" placeholder="Search posts, groups, resources, people..." />
+          <div className="row">
             <Link className="button secondary" href="/events">Create event</Link>
-            <Link className="button secondary" href="/groups">New group</Link>
+            <UserButton />
           </div>
-        </section>
-        {children}
-      </main>
+        </div>
+      </header>
+
+      <main className="main stack container">{children}</main>
     </div>
   );
 }

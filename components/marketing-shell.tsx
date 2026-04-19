@@ -3,21 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-
-const marketingLinks = [
-  { href: "/", label: "Home" },
-  { href: "/platform", label: "Platform" },
-  { href: "/about", label: "About" },
-  { href: "/features", label: "Features" },
-  { href: "/integrations", label: "Integrations" },
-  { href: "/science-communities", label: "Communities" },
-  { href: "/study-groups", label: "Study Groups" },
-  { href: "/for-educators", label: "For Educators" },
-  { href: "/events-public", label: "Events" },
-  { href: "/plans", label: "Plans" },
-  { href: "/help", label: "Help" },
-  { href: "/contact", label: "Contact" }
-];
+import { exploreLinks, mainNavLinks } from "@/lib/topic-nav";
 
 type MarketingShellProps = {
   children: React.ReactNode;
@@ -31,6 +17,12 @@ export function MarketingShell({ children }: MarketingShellProps) {
 
   return (
     <div className="site-shell">
+      <div className="ambient-bg" aria-hidden>
+        <span className="ambient-orb orb-a" />
+        <span className="ambient-orb orb-b" />
+        <span className="ambient-orb orb-c" />
+      </div>
+
       <header className="public-nav">
         <div className="container nav-inner">
           <Link className="nav-brand" href="/">
@@ -38,17 +30,17 @@ export function MarketingShell({ children }: MarketingShellProps) {
             SciSphere
           </Link>
 
-          <button className="menu-toggle" type="button" onClick={() => setMenuOpen((value) => !value)}>
-            {menuOpen ? "Close" : "Menu"}
-          </button>
-
           <nav className="nav-links">
-            {marketingLinks.map((link) => (
+            {mainNavLinks.map((link) => (
               <Link key={link.href} href={link.href} className={isActive(link.href) ? "active" : ""}>
                 {link.label}
               </Link>
             ))}
           </nav>
+
+          <button className="menu-toggle" type="button" onClick={() => setMenuOpen((value) => !value)}>
+            {menuOpen ? "Close" : "Menu"}
+          </button>
 
           <div className="auth-links">
             <Link className="button secondary" href="/sign-in">
@@ -62,7 +54,8 @@ export function MarketingShell({ children }: MarketingShellProps) {
 
         {menuOpen ? (
           <div className="container mobile-menu stack">
-            {marketingLinks.map((link) => (
+            <div className="menu-group-label">Main navigation</div>
+            {mainNavLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -72,6 +65,26 @@ export function MarketingShell({ children }: MarketingShellProps) {
                 {link.label}
               </Link>
             ))}
+            <div className="menu-group-label">Explore</div>
+            {exploreLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={isActive(link.href) ? "mobile-link active" : "mobile-link"}
+                onClick={() => setMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <div className="menu-group-label">App</div>
+            <div className="row wrap">
+              <Link className="button secondary" href="/feed" onClick={() => setMenuOpen(false)}>
+                Open app
+              </Link>
+              <Link className="button secondary" href="/search" onClick={() => setMenuOpen(false)}>
+                Search app
+              </Link>
+            </div>
             <div className="row">
               <Link className="button secondary" href="/sign-in" onClick={() => setMenuOpen(false)}>
                 Sign in
@@ -108,6 +121,8 @@ export function MarketingShell({ children }: MarketingShellProps) {
           <div className="stack">
             <strong>Resources</strong>
             <Link href="/integrations">Integrations</Link>
+            <Link href="/security">Security</Link>
+            <Link href="/changelog">Changelog</Link>
             <Link href="/help">Help center</Link>
             <Link href="/contact">Contact</Link>
             <Link href="/for-educators">For educators</Link>
@@ -119,6 +134,7 @@ export function MarketingShell({ children }: MarketingShellProps) {
             <Link href="/feed">Feed</Link>
             <Link href="/dashboard">Dashboard</Link>
             <Link href="/pricing">In-app pricing</Link>
+            <Link href="/careers">Careers</Link>
             <Link href="/demo/presentation">Demo presentation</Link>
           </div>
         </div>
